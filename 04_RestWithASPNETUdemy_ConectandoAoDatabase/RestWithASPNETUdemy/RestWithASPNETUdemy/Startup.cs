@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using RestWithASPNETUdemy.Model.Context;
 using RestWithASPNETUdemy.Services;
 using RestWithASPNETUdemy.Services.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy
 {
@@ -29,7 +24,11 @@ namespace RestWithASPNETUdemy
         {
 
             services.AddControllers();
-            //Injeção de Dependencia
+
+            var connection = Configuration["MySQLConnection:MySQLConnectionString"];
+            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+
+            //Dependency Injection
             services.AddScoped<IPersonService, PersonServiceImplementation>();
         }
 
